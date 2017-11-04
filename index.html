@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>Anunturi</title>
+	</head>
+	<body>
+		<form method='POST'>
+		<textarea name='sql' style='width:100%; height:20%; margin-bottom:10px'>
+		{{ sql }}
+		</textarea>
+		<button type='submit'>Run Query</button>
+		</form>
+		{% if error %}
+			<div style='color:red'>
+				{{ error | json }}
+				{{ error.message }}
+			</div>
+		{% endif %}
+	</body>
+</html> 
