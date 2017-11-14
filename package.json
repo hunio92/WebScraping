@@ -1,0 +1,26 @@
+{
+  "name": "webscraping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "sqlite3": "^3.1.13",
+    "swig": "^1.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hunio92/WebScraping.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hunio92/WebScraping/issues"
+  },
+  "homepage": "https://github.com/hunio92/WebScraping#readme"
+}

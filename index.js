@@ -1,16 +1,16 @@
 const express = require('express'); // install express
 const bodyParser = require('body-parser'); // install body parser: npm install body-parser
-const swig = require('swig'); // install swig: 
+const swig = require('swig'); // install swig:
 swig.setDefaults({ cache: false });
-const sqlite = require('slite3');
+const sqlite = require('sqlite3');
 
-const db = new sqlite.Database('./databaseName.db', (err)=> console.log(err));
+const db = new sqlite.Database('./database.db', (err)=> console.log(err));
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.set('view enginew', 'html');
-app.engine('html', swig. renderFile); 
+app.set('view engine', 'html');
+app.engine('html', swig.renderFile);
 
 app.get('/', (req, res, next)=> res.render('index'));
 
@@ -23,4 +23,4 @@ app.post('/', (req, res, next)=> {
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, ()=> console.log('listening on port ${port}'));
+app.listen(port, ()=> console.log(`listening on port ${port}`));

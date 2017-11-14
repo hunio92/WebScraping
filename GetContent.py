@@ -1,4 +1,4 @@
-from urllib.request import urlopen as urlReq
+from urllib import urlopen
 from bs4 import BeautifulSoup as soup
 import sqlite3
 
@@ -9,7 +9,7 @@ cursor.execute('CREATE TABLE IF NOT EXISTS announcements(link TEXT, img_link TEX
 
 urlToScrap = 'https://nemutam.com/?pag=1'
 
-uClient = urlReq(urlToScrap)
+uClient = urlopen(urlToScrap)
 page_html = uClient.read()
 uClient.close()
 
