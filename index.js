@@ -1,6 +1,6 @@
-const express = require('express'); // install express
-const bodyParser = require('body-parser'); // install body parser: npm install body-parser
-const swig = require('swig'); // install swig:
+const express = require('express');
+const bodyParser = require('body-parser');
+const swig = require('swig');
 swig.setDefaults({ cache: false });
 const sqlite = require('sqlite3');
 
@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('view engine', 'html');
 app.engine('html', swig.renderFile);
+
+app.use(express.static('public'))
 
 app.get('/', (req, res, next)=> res.render('index'));
 
