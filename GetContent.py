@@ -5,8 +5,8 @@ import sqlite3, time
 database = sqlite3.connect('database.db')
 
 cursor = database.cursor()
-cursor.execute('CREATE TABLE IF NOT EXISTS announcements(link TEXT, img_link TEXT, price INT, title TEXT, area TEXT, rooms INT, surface TEXT, publishedBy TEXT, agency TEXT)')
-
+cursor.execute('CREATE TABLE IF NOT EXISTS announcements(id	INTEGER PRIMARY KEY AUTOINCREMENT, link TEXT, img_link TEXT, price INTEGER, title TEXT, area TEXT, rooms INTEGER, surface TEXT, publishedBy TEXT, agency TEXT)')
+ 
 for i in range(1,1411):
     print(i)
     urlToScrap = 'https://nemutam.com/?pag=' + str(i);
@@ -20,10 +20,12 @@ for i in range(1,1411):
     containers = page_soup.findAll("div", {"class":"thumbnail"})
 
     for container in containers:
-        # ToDo: hogyha a link nemutam.com ellenorizni is berakni
-        link = container.a["href"]
-        img_link = container.img["src"]
-        price = container.find("span", {"class":"post-price"}).text
+        if "http" in container.a["href"]:
+            link = container.a["href"]
+        else:
+            link = "https://nemutam.com" + container.a["href"]
+        img_link = "https://nemutam.com" + container.img["src"]
+        price = int(container.find("span", {"class":"post-price"}).text.split()[0].replace(".",""))
         title = container.find("div", {"class":"caption"}).p["title"]
         rows = container.div.table.findAll("td")
         area = rows[1].text
@@ -34,7 +36,7 @@ for i in range(1,1411):
         cursor.execute('INSERT INTO announcements (link, img_link, price, title, area, rooms, surface, publishedBy, agency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (link, img_link, price, title, area, rooms, surface, publishedBy, agency))
         database.commit()
 
-    time.sleep(5)
+    time.sleep(10)
 # print(containers[0])
 # print(link)
 # print("https://nemutam.com" + img_link)

@@ -12,14 +12,57 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'html');
 app.engine('html', swig.renderFile);
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
-app.get('/', (req, res, next)=> res.render('index'));
+function findFirstElements(req, res, next) {
+    var querry = 'SELECT * FROM announcements LIMIT 12';
+    db.all(querry, function(err, rows) {
+        if(rows.length !== 0) {
+            req.results = rows;
+            return next();
+        }
+        res.render(err);
+    });
+}
+
+function findAreaNames(req, res, next) {
+    var querry = 'SELECT DISTINCT area FROM announcements WHERE area != ""';
+    db.all(querry, function(err, rows) {
+        if(rows.length !== 0) {
+            req.areas = rows;
+            return next();
+        }
+        res.render(err);
+    });
+}
+
+function findRoomNumbers(req, res, next) {
+    var querry = 'SELECT DISTINCT rooms FROM announcements WHERE rooms != "" ORDER BY rooms ASC';
+    db.all(querry, function(err, rows) {
+        if(rows.length !== 0) {
+            req.rooms = rows;
+            return next();
+        }
+        res.render(err);
+    });
+}
+
+function renderResults(req, res) {
+    res.render('index', {
+        results: req.results,
+        areas: req.areas,
+				rooms: req.rooms
+    });
+}
+
+app.get('/', findFirstElements, findAreaNames, findRoomNumbers, renderResults);
 
 app.post('/', (req, res, next)=> {
-	const sql = req.body.sql;
-	db.all(sql, (err, results)=> {
-		res.render('index', { sql, results: results, error: err});
+	const min = req.body.min
+	const max = req.body.max
+	const querry = 'SELECT * FROM announcements WHERE price BETWEEN ' + min + ' AND ' + max;
+	db.all(querry, (err, results)=> {
+		res.render('index', { results: results, error: err});
 	});
 });
 
