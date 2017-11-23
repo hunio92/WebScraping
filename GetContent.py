@@ -6,9 +6,8 @@ database = sqlite3.connect('database.db')
 
 cursor = database.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS announcements(id	INTEGER PRIMARY KEY AUTOINCREMENT, link TEXT, img_link TEXT, price INTEGER, title TEXT, area TEXT, rooms INTEGER, surface TEXT, publishedBy TEXT, agency TEXT)')
- 
+
 for i in range(1,1411):
-    print(i)
     urlToScrap = 'https://nemutam.com/?pag=' + str(i);
 
     uClient = urlopen(urlToScrap)
@@ -25,7 +24,10 @@ for i in range(1,1411):
         else:
             link = "https://nemutam.com" + container.a["href"]
         img_link = "https://nemutam.com" + container.img["src"]
-        price = int(container.find("span", {"class":"post-price"}).text.split()[0].replace(".",""))
+        if (container.find("span", {"class":"post-price"}).text.split()[0]) != "?":
+            price = long(container.find("span", {"class":"post-price"}).text.split()[0].replace(".",""))
+        else:
+            price = 0
         title = container.find("div", {"class":"caption"}).p["title"]
         rows = container.div.table.findAll("td")
         area = rows[1].text
@@ -37,6 +39,7 @@ for i in range(1,1411):
         database.commit()
 
     time.sleep(10)
+    print(i)
 # print(containers[0])
 # print(link)
 # print("https://nemutam.com" + img_link)

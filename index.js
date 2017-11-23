@@ -58,11 +58,12 @@ function renderResults(req, res) {
 app.get('/', findFirstElements, findAreaNames, findRoomNumbers, renderResults);
 
 app.post('/', (req, res, next)=> {
-	const min = req.body.min
-	const max = req.body.max
-	const querry = 'SELECT * FROM announcements WHERE price BETWEEN ' + min + ' AND ' + max;
+	const minPrice = req.body.minPrice
+	const maxPrice = req.body.maxPrice
+  const area = req.body.area
+	const querry = 'SELECT * FROM announcements WHERE price BETWEEN ' + minPrice + ' AND ' + maxPrice;
 	db.all(querry, (err, results)=> {
-		res.render('index', { results: results, error: err});
+		res.render('index', { results: results, error: area});
 	});
 });
 

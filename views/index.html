@@ -4,11 +4,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <meta name="Homeless Cluj-Napoca" content="">
+    <meta name="SuperSuperWoW" content="">
+    <link rel="shortcut icon" href="icon.png">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Homeless | Fara Locuinta</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -23,12 +23,12 @@
       <div class="container">
         <div class="row">
           <form class="form-inline input-group-sm" method='POST'>
-            <input name='min' type="text" class="form-control input-sm col-sm-2 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret minim Euro">
+            <input name='minPrice' type="text" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret minim">
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">-</span>
-            <input name='max' type="text" class="form-control input-sm col-sm-2 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret maxim Euro">
+            <input name='maxPrice' type="text" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret maxim">
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
             <div class="form-inline input-group-sm mb-2 mr-sm-2 mb-sm-0">
-              <select class="form-control">
+              <select name='area' class="form-control">
                 <option hidden>Zona</option>
                 {% for area in areas %}
                 <option>{{ area.area }}</option>
@@ -37,7 +37,7 @@
             </div>
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
             <div class="form-inline input-group-sm mb-2 mr-sm-2 mb-sm-0">
-              <select class="form-control">
+              <select name='rooms' class="form-control">
                 <option hidden>Camere</option>
                 {% for room in rooms %}
                 <option>{{ room.rooms }}</option>
@@ -45,13 +45,15 @@
               </select>
             </div>
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
-            <input type="text" class="form-control input-sm col-sm-2 mb-2 mr-sm-2 mb-sm-0" placeholder="Suprafata">
+            <input name='minSurface' type="text" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="min Suprafata">
+            <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">-</span>
+            <input name='maxSurface' type="text" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="max Suprafata">
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
             <div class="form-inline input-group-sm mb-2 mr-sm-2 mb-sm-0">
-              <select class="form-control">
+              <select name='sortBy' class="form-control">
                 <option hidden>Ordoneaza dupa</option>
-                <option>Pret crescator</option>
-                <option>Pret descrescator</option>
+                <option value="1">Pret crescator</option>
+                <option value="2">Pret descrescator</option>
               </select>
             </div>
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
@@ -71,7 +73,7 @@
         {% for result in results %}
         <div class="col-lg-4 col-sm-6 portfolio-item">
           <div class="card">
-            <a href="#"><img class="card-img-top" src="{{ result.img_link }}" alt=""></a>
+            <a href="{{ result.link }}"><img class="card-img-top" src="{{ result.img_link }}" alt=""></a>
             <div class="caption">
               <p title="{{ result.title }}">{{ result.title }}</p>
               <table class="table table-condensed">
