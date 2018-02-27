@@ -1,4 +1,5 @@
-from urllib import urlopen
+# from urllib import urlopen
+from urllib.request import urlopen
 from bs4 import BeautifulSoup as soup
 import sqlite3, time
 
@@ -7,7 +8,7 @@ database = sqlite3.connect('database.db')
 cursor = database.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS announcements(id	INTEGER PRIMARY KEY AUTOINCREMENT, link TEXT, img_link TEXT, price INTEGER, title TEXT, area TEXT, rooms INTEGER, surface TEXT, publishedBy TEXT, agency TEXT)')
 
-for i in range(1,1411):
+for i in range(1,2):
     urlToScrap = 'https://nemutam.com/?pag=' + str(i);
 
     uClient = urlopen(urlToScrap)
@@ -23,9 +24,12 @@ for i in range(1,1411):
             link = container.a["href"]
         else:
             link = "https://nemutam.com" + container.a["href"]
-        img_link = "https://nemutam.com" + container.img["src"]
+        if "http" in container.img["src"]:
+            img_link = container.img["src"]
+        else:
+            img_link = "https://nemutam.com/static/img/fara-poze.png"
         if (container.find("span", {"class":"post-price"}).text.split()[0]) != "?":
-            price = long(container.find("span", {"class":"post-price"}).text.split()[0].replace(".",""))
+            price = int(container.find("span", {"class":"post-price"}).text.split()[0].replace(".",""))
         else:
             price = 0
         title = container.find("div", {"class":"caption"}).p["title"]

@@ -7,8 +7,11 @@
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "browser-sync": "^2.18.13",
+    "daemon": "^1.1.0",
     "express": "^4.16.2",
     "gulp": "^3.9.1",
+    "node-pre-gyp": "^0.6.39",
+    "package.json": "^2.0.1",
     "sqlite3": "^3.1.13",
     "swig": "^1.4.2"
   },

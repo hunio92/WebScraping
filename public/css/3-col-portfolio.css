@@ -4,6 +4,17 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-3-col-portfolio/blob/master/LICENSE)
  */
 
+ /* For Firefox */
+ input[type='number'] {
+     -moz-appearance:textfield;
+ }
+ /* Webkit browsers like Safari and Chrome */
+ input[type=number]::-webkit-inner-spin-button,
+ input[type=number]::-webkit-outer-spin-button {
+     -webkit-appearance: none;
+     margin: 0;
+ }
+
 body {
   padding-top: 54px;
 }
@@ -20,4 +31,11 @@ body {
 
 .pagination {
   margin-bottom: 30px;
+}
+
+#caption-title
+{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

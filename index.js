@@ -47,7 +47,7 @@ function findRoomNumbers(req, res, next) {
     });
 }
 
-function renderResults(req, res) {
+function renderResults(req, res) { 
     res.render('index', {
         results: req.results,
         areas: req.areas,
@@ -57,13 +57,28 @@ function renderResults(req, res) {
 
 app.get('/', findFirstElements, findAreaNames, findRoomNumbers, renderResults);
 
+function getValueOrZero(value) { return value ? value : 0 }
+
 app.post('/', (req, res, next)=> {
+  querry = 'SELECT * FROM announcements WHERE';
 	const minPrice = req.body.minPrice
-	const maxPrice = req.body.maxPrice
+  const maxPrice = req.body.maxPrice
+  if (minPrice || maxPrice)
+    querry += " price BETWEEN " + getValueOrZero(minPrice) + " AND " + getValueOrZero(maxPrice)
   const area = req.body.area
-	const querry = 'SELECT * FROM announcements WHERE price BETWEEN ' + minPrice + ' AND ' + maxPrice;
+  if (area)
+  {
+      querry += " AND area = '" + area + "'"
+  }
+  const rooms = req.body.rooms
+  const minSurface = req.body.minSurface
+  const maxSurface = req.body.maxSurface
+  const orderBy = req.body.sortBy
+  // if not minPrice:
+
+  output = minPrice + " " + maxPrice + " " + area + " " + rooms + " " + minSurface + " " + maxSurface + " " + orderBy
 	db.all(querry, (err, results)=> {
-		res.render('index', { results: results, error: area});
+		res.render('index', { results: results, error: querry});
 	});
 });
 
