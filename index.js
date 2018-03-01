@@ -47,7 +47,7 @@ function findRoomNumbers(req, res, next) {
     });
 }
 
-function renderResults(req, res) { 
+function renderResults(req, res) {
     res.render('index', {
         results: req.results,
         areas: req.areas,
@@ -58,27 +58,53 @@ function renderResults(req, res) {
 app.get('/', findFirstElements, findAreaNames, findRoomNumbers, renderResults);
 
 function getValueOrZero(value) { return value ? value : 0 }
+function addStrWhereOrAnd(querry) { return querry.indexOf("WHERE") === -1 ? querry += " WHERE " : querry += " AND " }
 
 app.post('/', (req, res, next)=> {
-  querry = 'SELECT * FROM announcements WHERE';
-	const minPrice = req.body.minPrice
+  querry = ""
+  const minPrice = req.body.minPrice
   const maxPrice = req.body.maxPrice
-  if (minPrice || maxPrice)
-    querry += " price BETWEEN " + getValueOrZero(minPrice) + " AND " + getValueOrZero(maxPrice)
   const area = req.body.area
-  if (area)
-  {
-      querry += " AND area = '" + area + "'"
-  }
   const rooms = req.body.rooms
   const minSurface = req.body.minSurface
   const maxSurface = req.body.maxSurface
   const orderBy = req.body.sortBy
-  // if not minPrice:
+  if (minPrice || maxPrice || area || rooms || minSurface || maxSurface || orderBy)
+  {
+    querry = 'SELECT * FROM announcements';
+  }
+  if (minPrice || maxPrice)
+  {
+    querry = addStrWhereOrAnd(querry)
+    querry += "price BETWEEN " + getValueOrZero(minPrice) + " AND " + getValueOrZero(maxPrice)
+  }
+  if (area)
+  {
+    querry = addStrWhereOrAnd(querry)
+    querry += "area = '" + area + "'"
+  }
+  if (rooms) 
+  {
+    querry = addStrWhereOrAnd(querry)
+    querry += "rooms = '" + rooms + "'"
+  }
+  if (minSurface || maxSurface)
+  {
+    querry = addStrWhereOrAnd(querry)
+    querry += "surface BETWEEN " + getValueOrZero(minSurface) + " AND " + getValueOrZero(maxSurface)
+  }
+  switch (parseInt(orderBy)) {
+    case 1:
+      querry += " ORDER BY price ASC"
+      break;
+    case 2:
+      querry += " ORDER BY price DESC"
+    default:
+  }
 
-  output = minPrice + " " + maxPrice + " " + area + " " + rooms + " " + minSurface + " " + maxSurface + " " + orderBy
+  output = mnPrice + " " + maxPrice + " " + area + " " + rooms + " " + minSurface + " " + maxSurface + " " + orderBy
 	db.all(querry, (err, results)=> {
-		res.render('index', { results: results, error: querry});
+		    res.render('index', { results: results, error: querry});
 	});
 });
 
