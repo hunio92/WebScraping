@@ -51,48 +51,60 @@ function renderResults(req, res) {
     res.render('index', {
         results: req.results,
         areas: req.areas,
-				rooms: req.rooms
+				// rooms: req.rooms
     });
 }
 
 app.get('/', findFirstElements, findAreaNames, findRoomNumbers, renderResults);
 
+function Item(name, minValue, maxValue)
+{
+  this.name = name;
+  this.minValue = minValue;
+  this.maxValue = maxValue;
+}
+
 function getValueOrZero(value) { return value ? value : 0 }
+
 function addStrWhereOrAnd(querry) { return querry.indexOf("WHERE") === -1 ? querry += " WHERE " : querry += " AND " }
 
+function addToQuerry(item, querry)
+{
+  if (isNaN(item.minValue))
+  {
+    querry = addStrWhereOrAnd(querry)
+    querry += item.name + " = '" + item.minValue + "'"
+  }
+  else
+  {
+    if (item.maxValue > item.minValue)
+    {
+      querry = addStrWhereOrAnd(querry)
+      querry += item.name + " BETWEEN " + getValueOrZero(item.minValue) + " AND " + item.maxValue
+    }
+    if (item.minValue)
+    {
+      querry = addStrWhereOrAnd(querry)
+      querry += item.name + " >= " + item.minValue
+    }
+  }
+  return querry
+}
+
 app.post('/', (req, res, next)=> {
-  querry = ""
-  const minPrice = req.body.minPrice
-  const maxPrice = req.body.maxPrice
-  const area = req.body.area
-  const rooms = req.body.rooms
-  const minSurface = req.body.minSurface
-  const maxSurface = req.body.maxSurface
+  querry = 'SELECT * FROM announcements';
+
+  price = new Item("price", req.body.minPrice, req.body.maxPrice)
+  area = new Item("area", req.body.area, 0)
+  rooms = new Item("rooms", req.body.minRooms, req.body.maxRooms)
+  surface = new Item("surface", req.body.minSurface, req.body.maxSurface)
   const orderBy = req.body.sortBy
-  if (minPrice || maxPrice || area || rooms || minSurface || maxSurface || orderBy)
-  {
-    querry = 'SELECT * FROM announcements';
-  }
-  if (minPrice || maxPrice)
-  {
-    querry = addStrWhereOrAnd(querry)
-    querry += "price BETWEEN " + getValueOrZero(minPrice) + " AND " + getValueOrZero(maxPrice)
-  }
-  if (area)
-  {
-    querry = addStrWhereOrAnd(querry)
-    querry += "area = '" + area + "'"
-  }
-  if (rooms) 
-  {
-    querry = addStrWhereOrAnd(querry)
-    querry += "rooms = '" + rooms + "'"
-  }
-  if (minSurface || maxSurface)
-  {
-    querry = addStrWhereOrAnd(querry)
-    querry += "surface BETWEEN " + getValueOrZero(minSurface) + " AND " + getValueOrZero(maxSurface)
-  }
+
+  querry = addToQuerry(price, querry)
+  querry = addToQuerry(area, querry)
+  querry = addToQuerry(rooms, querry)
+  querry = addToQuerry(surface, querry)
+
   switch (parseInt(orderBy)) {
     case 1:
       querry += " ORDER BY price ASC"
@@ -102,7 +114,7 @@ app.post('/', (req, res, next)=> {
     default:
   }
 
-  output = mnPrice + " " + maxPrice + " " + area + " " + rooms + " " + minSurface + " " + maxSurface + " " + orderBy
+  output = ""
 	db.all(querry, (err, results)=> {
 		    res.render('index', { results: results, error: querry});
 	});

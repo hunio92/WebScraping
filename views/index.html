@@ -23,10 +23,12 @@
       <div class="container">
         <div class="row">
           <form class="form-inline input-group-sm" method='POST'>
-            <input name='minPrice' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret minim">
+            <!-- ***** PRICE ***** -->
+            <input name='minPrice' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" value="" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret minim">
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">-</span>
-            <input name='maxPrice' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret maxim">
+            <input name='maxPrice' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" value="" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="Pret maxim">
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
+            <!-- ***** AREA ***** -->
             <div class="form-inline input-group-sm mb-2 mr-sm-2 mb-sm-0">
               <select name='area' class="form-control">
                 <option value="" hidden>Zona</option>
@@ -36,19 +38,17 @@
               </select>
             </div>
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
-            <div class="form-inline input-group-sm mb-2 mr-sm-2 mb-sm-0">
-              <select name='rooms' class="form-control">
-                <option value="" hidden>Camere</option>
-                {% for room in rooms %}
-                <option>{{ room.rooms }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
-            <input name='minSurface' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="min Suprafata">
+            <!-- ***** ROOMS ***** -->
+            <input name='minRooms' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" value="" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="min Camere">
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">-</span>
-            <input name='maxSurface' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="max Suprafata">
+            <input name='maxRooms' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" value="" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="max Camere">
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
+            <!-- ***** SURFACE ***** -->
+            <input name='minSurface' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" value="" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="min Suprafata">
+            <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">-</span>
+            <input name='maxSurface' onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" value="" class="form-control input-sm col-sm-1 mb-2 mr-sm-2 mb-sm-0" placeholder="max Suprafata">
+            <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
+            <!-- ***** ORDER BY ***** -->
             <div class="form-inline input-group-sm mb-2 mr-sm-2 mb-sm-0">
               <select name='sortBy' class="form-control">
                 <option value="0" hidden>Ordoneaza dupa</option>
@@ -57,8 +57,9 @@
               </select>
             </div>
             <span style="color:white;" class="form-inline mb-2 mr-sm-2 mb-sm-0">|</span>
+            <!-- ***** SEARCH BUTTON ***** -->
             <button type="submit" class="btn btn-sm btn-danger">
-              <span class="glyphicon glyphicon-search"> Cauta</span>
+            <span class="glyphicon glyphicon-search"> Cauta</span>
             </button>
           </form>
         </div>
