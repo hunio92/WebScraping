@@ -114,7 +114,6 @@ app.post('/', (req, res, next)=> {
     default:
   }
 
-  output = ""
 	db.all(querry, (err, results)=> {
 		    res.render('index', { results: results, error: querry});
 	});
